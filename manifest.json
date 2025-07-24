@@ -9,6 +9,20 @@
         "16": "icon.png"
       }
     },
-    "permissions": ["storage"]
+    "permissions": [],
+    "host_permissions": ["https://lichess.org/*"],
+    "web_accessible_resources": [
+      {
+        "resources": ["popup.html"],
+        "matches": ["https://lichess.org/*"]
+      }
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://lichess.org/*"],
+        "js": ["content.js"],
+        "run_at": "document_idle"
+      }
+    ]
   }
   
