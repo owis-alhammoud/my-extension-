@@ -1,7 +1,22 @@
 (function() {
   const moves = [];
+  let pgn = '';
+
+  function movesToPgn(list) {
+    let result = '';
+    list.forEach((mv, idx) => {
+      if (idx % 2 === 0) {
+        result += `${Math.floor(idx / 2) + 1}. `;
+      }
+      result += mv + ' ';
+    });
+    return result.trim();
+  }
+
   const saveMoves = () => {
-    chrome.storage.local.set({ moves });
+    pgn = movesToPgn(moves);
+    chrome.storage.local.set({ moves, pgn });
+    chrome.runtime.sendMessage({ pgn, moves: [...moves] });
   };
 
   function getMovesContainer() {
