@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head><title>Popup</title></head>
+  <head>
+    <title>Popup</title>
+    <style>
+      #pgn {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+    </style>
+  </head>
   <body>
     <h1>Lichess PGN</h1>
     <pre id="pgn"></pre>
-    <script src="popup.js"></script>
+    <h2>Top suggestions</h2>
+    <ol id="suggestions"></ol>
+    <script type="module" src="popup.js"></script>
   </body>
 </html>
