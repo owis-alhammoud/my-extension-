@@ -16,16 +16,26 @@
 
   const sendMoves = () => {
     pgn = movesToPgn(moves);
-    chrome.runtime.sendMessage({ pgn, moves: [...moves] });
+    try {
+      if (chrome?.runtime?.id) {
+        chrome.runtime.sendMessage({ pgn, moves: [...moves] });
+      }
+    } catch (e) {
+      console.warn('Failed to send message', e);
+    }
   };
 
   function openPopup() {
-    if (!popupWin || popupWin.closed) {
-      popupWin = window.open(
-        chrome.runtime.getURL('popup.html'),
-        'lichessPGN',
-        'width=300,height=400'
-      );
+    try {
+      if (!popupWin || popupWin.closed) {
+        popupWin = window.open(
+          chrome.runtime.getURL('popup.html'),
+          'lichessPGN',
+          'width=300,height=400'
+        );
+      }
+    } catch (e) {
+      console.warn('Failed to open popup', e);
     }
   }
 

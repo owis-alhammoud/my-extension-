@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!res.ok) throw new Error('net');
       const data = await res.json();
       if (Array.isArray(data.pvs)) {
-        data.pvs.forEach(pv => {
+        data.pvs.slice(0, 5).forEach(pv => {
           const li = document.createElement('li');
           li.textContent = pv.moves.split(' ')[0];
           suggEl.appendChild(li);
