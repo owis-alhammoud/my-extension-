@@ -6,12 +6,13 @@
 
   function getMovesContainer() {
     return document.querySelector('.vertical-move-list') ||
-           document.querySelector('.moves');
+           document.querySelector('.moves') ||
+           document.querySelector('rm6 l4x');
   }
 
   function captureMoves(container) {
     if (!container) return;
-    const moveNodes = container.querySelectorAll('move, .move');
+    const moveNodes = container.querySelectorAll('move, .move, kwdb');
     const allMoves = Array.from(moveNodes)
       .map(n => n.textContent.trim())
       .filter(Boolean);
