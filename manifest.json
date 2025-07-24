@@ -9,7 +9,7 @@
         "16": "icon.png"
       }
     },
-    "permissions": ["storage"],
+    "permissions": [],
     "host_permissions": ["https://lichess.org/*"],
     "web_accessible_resources": [
       {

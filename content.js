@@ -14,9 +14,8 @@
     return result.trim();
   }
 
-  const saveMoves = () => {
+  const sendMoves = () => {
     pgn = movesToPgn(moves);
-    chrome.storage.local.set({ moves, pgn });
     chrome.runtime.sendMessage({ pgn, moves: [...moves] });
   };
 
@@ -44,7 +43,7 @@
       .filter(Boolean);
     moves.length = 0;
     moves.push(...allMoves);
-    saveMoves();
+    sendMoves();
     console.log('Lichess moves:', moves);
   }
 
@@ -59,6 +58,12 @@
     observer.observe(container, { childList: true, subtree: true });
     openPopup();
   }
+
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg === 'getPGN') {
+      sendResponse({ pgn });
+    }
+  });
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     observe();
