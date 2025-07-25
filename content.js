@@ -1,6 +1,8 @@
-(function() {
+(async function() {
+  const { Chess } = await import(chrome.runtime.getURL('chess.js'));
   const moves = [];
   let pgn = '';
+  let fen = '';
   let popupWin;
 
   function movesToPgn(list) {
@@ -16,7 +18,16 @@
 
   const sendMoves = () => {
     pgn = movesToPgn(moves);
-    chrome.runtime.sendMessage({ pgn, moves: [...moves] });
+    const chess = new Chess();
+    for (const mv of moves) {
+      try {
+        chess.move(mv, { sloppy: true });
+      } catch (_) {
+        break;
+      }
+    }
+    fen = chess.fen();
+    chrome.runtime.sendMessage({ pgn, fen, moves: [...moves] });
   };
 
   function openPopup() {
@@ -61,7 +72,7 @@
 
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg === 'getPGN') {
-      sendResponse({ pgn });
+      sendResponse({ pgn, fen });
     }
   });
 
