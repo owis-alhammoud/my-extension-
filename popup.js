@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   chrome.runtime.sendMessage('getPGN', (res) => {
+    if (chrome.runtime.lastError) {
+      console.warn('getPGN failed:', chrome.runtime.lastError.message);
+      return;
+    }
     if (res && res.pgn) render(res.pgn);
   });
 

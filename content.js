@@ -16,7 +16,11 @@
 
   const sendMoves = () => {
     pgn = movesToPgn(moves);
-    chrome.runtime.sendMessage({ pgn, moves: [...moves] });
+    chrome.runtime.sendMessage({ pgn, moves: [...moves] }, () => {
+      if (chrome.runtime.lastError) {
+        console.warn('sendMessage failed:', chrome.runtime.lastError.message);
+      }
+    });
   };
 
   function openPopup() {
