@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const pgnEl = document.getElementById('pgn');
+  const fenEl = document.getElementById('fen');
 
-  function render(pgn) {
-    pgnEl.textContent = pgn;
+  function render(fen) {
+    fenEl.textContent = fen;
   }
 
-  chrome.runtime.sendMessage('getPGN', (res) => {
-    if (res && res.pgn) render(res.pgn);
+  chrome.runtime.sendMessage('getFEN', (res) => {
+    if (res && res.fen) render(res.fen);
   });
 
   chrome.runtime.onMessage.addListener((msg) => {
-    if (msg.pgn) {
-      render(msg.pgn);
+    if (msg.fen) {
+      render(msg.fen);
     }
   });
 });
