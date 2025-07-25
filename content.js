@@ -1,11 +1,9 @@
 (function() {
   const moves = [];
   let fen = '';
-  const chess = new Chess();
   let popupWin;
 
-  const sendMoves = () => {
-    fen = chess.fen();
+  const sendData = () => {
     chrome.runtime.sendMessage({ fen, moves: [...moves] });
   };
 
@@ -25,6 +23,13 @@
            document.querySelector('rm6 l4x');
   }
 
+  function updateFEN() {
+    const board = document.querySelector('cg-board');
+    if (board) {
+      fen = board.getAttribute('data-fen') || '';
+    }
+  }
+
   function captureMoves(container) {
     if (!container) return;
     const moveNodes = container.querySelectorAll('move, .move, kwdb');
@@ -33,11 +38,8 @@
       .filter(Boolean);
     moves.length = 0;
     moves.push(...allMoves);
-    chess.reset();
-    allMoves.forEach(mv => {
-      try { chess.move(mv, { sloppy: true }); } catch (e) {}
-    });
-    sendMoves();
+    updateFEN();
+    sendData();
     console.log('Lichess moves:', moves, 'FEN:', fen);
   }
 
@@ -50,6 +52,14 @@
     captureMoves(container);
     const observer = new MutationObserver(() => captureMoves(container));
     observer.observe(container, { childList: true, subtree: true });
+    const board = document.querySelector('cg-board');
+    if (board) {
+      const boardObserver = new MutationObserver(() => {
+        updateFEN();
+        sendData();
+      });
+      boardObserver.observe(board, { attributes: true, attributeFilter: ['data-fen'] });
+    }
     openPopup();
   }
 
