@@ -13,7 +13,7 @@
     "host_permissions": ["https://lichess.org/*"],
     "web_accessible_resources": [
       {
-        "resources": ["popup.html"],
+        "resources": ["popup.html", "vendor/chess.js"],
         "matches": ["https://lichess.org/*"]
       }
     ],
